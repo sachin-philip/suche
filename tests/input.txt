@@ -1,0 +1,3 @@
+from suche import Suche; 
+suche = Suche(index="datastore");
+suche.allData("something", ["email", "name", "current_location"], 'pkl')
