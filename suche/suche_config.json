@@ -1,5 +1,5 @@
 {
   "ELASTIC_ADDRESS": "localhost",
   "ELASTIC_PORT": 9200,
-  "SUCHE_OUTPUT": "~/"
+  "SUCHE_OUTPUT": ""
 }

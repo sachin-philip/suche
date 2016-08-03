@@ -4,7 +4,7 @@ import csv
 import json
 import os.path
 
-__ver__ = '0.4.0'
+__ver__ = '0.4.3'
 
 """
 Suche - elasticsearch processor
@@ -53,18 +53,22 @@ class Suche(object):
         """
         f_name = os.path.join(self.config.get("SUCHE_OUTPUT") + self.output_file + ".csv")
         with open(f_name, "w") as finalfile:
-            output_file = csv.DictWriter(writefile, headers)
-            writer.headers()
-            writerow(list_out)
-        print "output file can be found at %s" %f_name
+            output_file = csv.DictWriter(finalfile, header)
+            output_file.writeheader()
+            for dat in list_out:
+                output_file.writerow(dat)
+        print "output file can be found at %s" % f_name
 
 
-    def _export_pkl(list, filename):
+    def _export_pkl(self, list_out):
         """
         Export in Pickle format
-        TODO
         """
-        pass
+        f_name = os.path.join(self.config.get("SUCHE_OUTPUT") + self.output_file + ".pkl")
+        flick = open(f_name, 'wb')
+        pickle.dump(list_out , flick)
+        flick.close()
+        print "output file can be found at %s" % f_name
 
 
     def allData(self, type, fields, output_format=None, filename=None):
@@ -72,7 +76,7 @@ class Suche(object):
         All Match data export
         """
         self.fields = fields
-        self.output_format = output_format.lower() if output_format else 'csv'
+        self.output_format = output_format.lower() if output_format else None
         self.output_file = filename.lower() if filename else "suche_export"
         search = self.es.search(
             index = self.index,
@@ -99,7 +103,7 @@ class Suche(object):
 
         """
         self.fields = fields
-        self.output_format = output_format.lower() if output_format else 'csv'
+        self.output_format = output_format.lower() if output_format else None
         self.output_file = filename.lower() if filename else "suche_export"
         search = self.es.search(
             index = self.index,
@@ -154,7 +158,6 @@ class Suche(object):
         if self.output_format == 'csv':
             self._export_csv(lists, self.fields)
         elif self.output_format == 'pkl':
-            pass
-            # pkl processing
+            self._export_pkl(lists)
         else:
-            return temp_list
+            return lists
