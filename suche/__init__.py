@@ -4,7 +4,7 @@ import csv
 import json
 import os.path
 
-__ver__ = '0.4.6'
+__ver__ = '0.4.7'
 
 """
 Suche - An Elasticsearch Export Framework

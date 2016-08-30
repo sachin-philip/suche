@@ -12,7 +12,7 @@ suche.filterData("person", { "key": "is_custom_domain", "query": "false" }, ["em
 
 multi-match data
 -----------------
-suche.multiMatch("person",[ { "key": "is_custom_domain", "query": "false" }, { "key": "current_location", "query": "India" } ]["email", "name", "current_location"], '')
+suche.multiMatch("person",[ { "key": "is_custom_domain", "query": "false" }, { "key": "current_location", "query": "India" }],["email", "name", "current_location"], '')
 
 
 [
