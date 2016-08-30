@@ -21,7 +21,7 @@ class Suche(object):
              default :9200
     index  : index name for the process - required field
     """
-    def __init__(self, address="localhost", port=9200, index=""):
+    def __init__(self, elastic_address="localhost", elastic_port=9200, index=""):
 
         if not address or port:
             try:
@@ -34,9 +34,9 @@ class Suche(object):
                                 "SUCHE_OUTPUT": ""
                                 }
 
-        self.address = address if address else self.config.get("ELASTIC_ADDRESS")
-        self.port = port if port else self.config.get("ELASTIC_PORT")
-        self.es_address = str(self.address)+ ":" + str(self.port)
+        self.elastic_address = elastic_address if elastic_address else self.config.get("ELASTIC_ADDRESS")
+        self.elastic_port = elastic_port if elastic_port else self.config.get("ELASTIC_PORT")
+        self.es_address = str(self.elastic_address)+ ":" + str(self.elastic_port)
         self.es = Elasticsearch(self.es_address)
         self.index = index
 

@@ -67,7 +67,7 @@ create Suche objects with custom configuration options required
 as shown below
 
 ```python
-suche = Suche(redis_address="localhost", redis_port=9300, 
+suche = Suche(elastic_address="localhost", elastic_port=9300, 
     index="default")
 ```
 
