@@ -64,7 +64,8 @@ class Suche(object):
             output_file.writeheader()
             for dat in list_out:
                 output_file.writerow(dat)
-        print "output file can be found at %s" % f_name
+        path_name = str(os.path.realpath(f_name))
+        print "output file can be found at %s" % path_name
 
 
     def _export_pkl(self, list_out):
@@ -75,7 +76,8 @@ class Suche(object):
         flick = open(f_name, 'wb')
         pickle.dump(list_out , flick)
         flick.close()
-        print "output file can be found at %s" % f_name
+        path_name = str(os.path.realpath(f_name))
+        print "output file can be found at %s" % path_name
 
 
     def allData(self, doc_type, fields, output_format=None, filename=None):
