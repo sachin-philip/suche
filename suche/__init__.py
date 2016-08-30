@@ -4,7 +4,7 @@ import csv
 import json
 import os.path
 
-__ver__ = '0.4.5'
+__ver__ = '0.4.6'
 
 """
 Suche - An Elasticsearch Export Framework
@@ -24,8 +24,15 @@ class Suche(object):
     def __init__(self, address="localhost", port=9200, index=""):
 
         if not address or port:
-            conf_string = open("suche_config.json", 'r').read()
-            self.config = json.loads(conf_string)
+            try:
+                conf_string = open("suche_config.json", 'r').read()
+                self.config = json.loads(conf_string)
+            except (IOError, ValueError):
+                self.config = {
+                                "ELASTIC_ADDRESS": "localhost",
+                                "ELASTIC_PORT": 9200,
+                                "SUCHE_OUTPUT": ""
+                                }
 
         self.address = address if address else self.config.get("ELASTIC_ADDRESS")
         self.port = port if port else self.config.get("ELASTIC_PORT")
