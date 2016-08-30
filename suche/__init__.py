@@ -4,10 +4,10 @@ import csv
 import json
 import os.path
 
-__ver__ = '0.4.3'
+__ver__ = '0.4.4'
 
 """
-Suche - elasticsearch processor
+Suche - An Elasticsearch Export Framework
 """
 class Suche(object):
 
@@ -71,7 +71,7 @@ class Suche(object):
         print "output file can be found at %s" % f_name
 
 
-    def allData(self, type, fields, output_format=None, filename=None):
+    def allData(self, doc_type, fields, output_format=None, filename=None):
         """
         All Match data export
         """
@@ -80,6 +80,7 @@ class Suche(object):
         self.output_file = filename.lower() if filename else "suche_export"
         search = self.es.search(
             index = self.index,
+            doc_type = doc_type,
             scroll = '2m',
             search_type = 'scan',
             size = 1000,
@@ -93,8 +94,7 @@ class Suche(object):
         return self._preProcess(sid, scroll_size)
 
 
-
-    def filterData(self, type, match_json , fields, output_format=None, filename=None):
+    def filterData(self, doc_type, match_json , fields, output_format=None, filename=None):
         """
         Filter Querying
 
@@ -102,17 +102,19 @@ class Suche(object):
         match_json : json for the filtered quering
 
         """
+        match_json_data = {match_json['key']: match_json['query']}
         self.fields = fields
         self.output_format = output_format.lower() if output_format else None
         self.output_file = filename.lower() if filename else "suche_export"
         search = self.es.search(
             index = self.index,
+            doc_type = doc_type,
             scroll = '2m',
             search_type = 'scan',
             size = 1000,
             body = {
                 "query": {
-                    "match" : match_json
+                    "match" : match_json_data
                     }, "fields" : self.fields
                 })
         sid = search['_scroll_id']
@@ -120,7 +122,52 @@ class Suche(object):
         return self._preProcess(sid, scroll_size)
 
 
-    def _preProcess(self, sid, scroll_size):
+    def multiMatch(self, doc_type, multiple_match, fields, output_format=None, filename=None):
+        """
+        Multi match quering
+
+        PARAMS
+        multiple match = dict
+        """
+        string = self._frameJson(multiple_match)
+        len_string = len(string)
+        self.fields = fields
+        self.output_format = output_format.lower() if output_format else None
+        self.output_file = filename.lower() if filename else "suche_export"
+        search = self.es.search(
+            index = self.index,
+            doc_type = doc_type,
+            scroll = '2m',
+            search_type = 'scan',
+            size = 1000,
+            body ={
+                    "query" : {
+                        "bool" : {
+                            "should" : string,
+                            "minimum_should_match" : len_string,
+                        }
+                    }
+                })
+        sid = search['_scroll_id']
+        scroll_size = search['hits']['total']
+        return self._preProcess(sid, scroll_size, multi=True)
+
+
+    def _frameJson(self, dict_val, multi=False):
+        """
+        Frame json
+        """
+        rise_json = []
+        if multi:
+            val = json.loads(dict_val)
+            rise_json.append({"match" : {val['key'] : val['query']}})
+        else:     
+            for val in dict_val:
+                rise_json.append({"match" : {val['key'] : val['query']}})
+        return rise_json
+
+
+    def _preProcess(self, sid, scroll_size, multi=False):
         """
         Data Proprocessing Function
         Formats data in to clean list
@@ -138,10 +185,16 @@ class Suche(object):
             for dat in data:
                 temp = {}
                 for field in self.fields:
-                    try:
-                        temp[field] = dat['fields'][field][0]
-                    except :
-                        temp[field] = "---"
+                    if multi:
+                        try:
+                            temp[field] = dat['_source'][field]
+                        except :
+                            temp[field] = "---"
+                    else:
+                        try:
+                            temp[field] = dat['fields'][field][0]
+                        except :
+                            temp[field] = "---"
                 try:
                     temp_list.append(temp)
                 except Exception as e:
@@ -154,7 +207,6 @@ class Suche(object):
         """
         Export Data Function controller
         """
-
         if self.output_format == 'csv':
             self._export_csv(lists, self.fields)
         elif self.output_format == 'pkl':

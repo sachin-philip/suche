@@ -1,3 +1,32 @@
-from suche import Suche; 
-suche = Suche(index="datastore");
-suche.allData("something", ["email", "name", "current_location"], 'pkl')
+from suche import Suche
+suche = Suche(index="datastore")
+
+all data
+---------- 
+suche.allData("person", ["email", "name", "current_location"], '')
+
+
+filter data
+------------
+suche.filterData("person", { "key": "is_custom_domain", "query": "false" }, ["email", "name", "current_location"], '')
+
+multi-match data
+-----------------
+suche.multiMatch("person",[ { "key": "is_custom_domain", "query": "false" }, { "key": "current_location", "query": "India" } ]["email", "name", "current_location"], '')
+
+
+[
+    {
+        "key": "Name",
+        "query": "Sachin"
+    },
+    {
+        "key": "Name",
+        "query": "Sachin"
+    },
+    {
+        "key": "Name",
+        "query": "Sachin"
+    }
+    
+]
