@@ -86,7 +86,7 @@ suche = Suche(elastic_address="localhost", elastic_port=9300,
         },
         {
             "key": "name",
-            "query": "atm"
+            "query": "almy"
         }
      ]
 
