@@ -19,22 +19,12 @@ More info: [https://www.elastic.co/](https://www.elastic.co/)
 ```python
 from suche import Suche
 suche = Suche(elastic_address, elastic_port, index)
-suche.allData(doc_type, fields, output_file_type, output_file_name)
 ```
 **elastic_address:** address for elasticsearch (optional)
 
 **elastic_port:** port number for elasticsearch (optional)
 
 **index:** index name of elasticsearch
-
-**doc_type:** doc type of index
-
-**fields:** fields you want to filter
-
-**output_file_type:** filetype in which output is required (optional)
-- Eg: 'pkl', 'csv'
-
-**output_file_name:** filename which to be saved (optional)
 
 
 ## Specific Functions
