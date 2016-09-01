@@ -4,7 +4,7 @@ import csv
 import json
 import os.path
 
-__ver__ = '0.4.9'
+__ver__ = '0.5.0'
 
 """
 Suche - An Elasticsearch Export Framework
@@ -23,7 +23,7 @@ class Suche(object):
     """
     def __init__(self, elastic_address="localhost", elastic_port=9200, index=""):
 
-        if not elastic_address or port:
+        if not elastic_address or elastic_port:
             try:
                 conf_string = open("suche_config.json", 'r').read()
                 self.config = json.loads(conf_string)
