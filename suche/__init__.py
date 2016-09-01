@@ -23,7 +23,7 @@ class Suche(object):
     """
     def __init__(self, elastic_address="localhost", elastic_port=9200, index=""):
 
-        if not address or port:
+        if not elastic_address or port:
             try:
                 conf_string = open("suche_config.json", 'r').read()
                 self.config = json.loads(conf_string)
