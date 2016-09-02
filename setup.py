@@ -13,4 +13,6 @@ setup(name='suche',
       install_requires=[
           "elasticsearch"
       ],
-      zip_safe=False)
+      zip_safe=False,
+      include_package_data=True
+      )
