@@ -103,6 +103,8 @@ suche.allData(doc_type = "person", fields= ["email", "name"], output_format= 'cs
 Matches all data in the doc type ```doc_type``` and filter data 
 in accordance to ```fields``` and return  ```output_format```
 
+Currently available ```output_format``` : csv and pickle
+
 #### FilterData
 
 Filtering takes a single json string to process
