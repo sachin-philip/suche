@@ -66,7 +66,7 @@ suche = Suche(elastic_address="localhost", elastic_port=9300,
 
 ## Input Format For query
 
-####The query input should be on below json Format for FilterData.
+#### The query input should be on below json Format for FilterData.
 
 ```json
     {
@@ -76,7 +76,7 @@ suche = Suche(elastic_address="localhost", elastic_port=9300,
 
 ```
 
-####The query input should be on below json Format for MultiFilter Data.
+#### The query input should be on below json Format for MultiFilter Data.
 
 ```json
     [
